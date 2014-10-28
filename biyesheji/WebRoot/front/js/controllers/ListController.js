@@ -30,6 +30,19 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
             query();
         }
     }, true);
+    
+    //初始化数据
+    $scope.initDate = function(){
+    	if(window.confirm("确定要删除旧数据，重新初始1000条数据？")){
+    		var params = {};
+        	var callback = function(){
+        		console.log("数据已经重置！");
+        		query();
+            };
+            
+            $scope.empService.initDate($scope, params, callback);
+    	}
+    }
 
     //删除操作
     $scope.remove = function(id){

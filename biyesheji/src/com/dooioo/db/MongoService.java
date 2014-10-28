@@ -9,6 +9,7 @@
 package com.dooioo.db;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -194,6 +195,41 @@ public class MongoService {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * 功能说明：初始化数据
+	 * @author 刘兴 
+	 * @Date 2014年10月28日 下午7:18:55
+	 * @return
+	 */
+	public boolean initDate(){
+		YunMongoClient client = YunMongoClient.getInstance();
+		
+		DBCollection db = client.getEmployee();
+    	
+		client.dropDatabase(db);
+		
+		for (int i = 0; i < 1000; i++) {
+			DBCursor list = db.find(new BasicDBObject()).sort(new BasicDBObject("userCode", -1)).limit(1);
+	    	
+	    	int maxUserCode = 80000;
+	    	
+			Iterator<DBObject> cursor = list.iterator();
+			while (cursor.hasNext()) {
+				DBObject dbObject = cursor.next();
+				maxUserCode = Integer.parseInt(dbObject.get("userCode").toString());
+				break;
+			}
+			
+			long time =  new Date().getTime();
+			
+	    	DBObject dbObject = this.buildDBObject(String.valueOf(maxUserCode + 1), "用户" + time, "开发2组", "软件工程师", "2014-10-10", "正式");
+	    	db.insert(dbObject).getN();
+		}
+    	
+		return true;
+	}
+	
 	private BasicDBObject buildFilter(String keyword, String dateFrom, String dateTo, String empStatus){
 		BasicDBList condList = new BasicDBList();
 		
@@ -279,10 +315,7 @@ public class MongoService {
     
     public static void main(String[] args) {
 		MongoService mongoService = new MongoService();
-		for (int i = 0; i < 1000; i++) {
-//			mongoService.update(String.valueOf(80000+i), String.valueOf(180000+i), "开发3组", "开发主管");
-		}
-//		Map<String, Object> paginate = mongoService.query("", "", "", "试用", 1);
+		mongoService.initDate();
 		Map<String, Object> paginate = mongoService.query("80001", "2014-01-01", "2014-01-10", "试用", 1);
 		System.out.println(paginate.get("totalCount"));
 	}

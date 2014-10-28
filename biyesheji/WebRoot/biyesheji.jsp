@@ -9,10 +9,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 <meta charset="UTF-8" />
 <title>列表页示例 - DUI标准规范 - 德佑地产</title>
-<link type="text/css" rel="stylesheet" href="http://dui.dooioo.com/public/css/main.css" />
-<link type="text/css" rel="stylesheet" href="http://dui.dooioo.com/public/css/header.css" />
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/lib/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/fns.js"></script>
+<link type="text/css" rel="stylesheet" href="http://public.dui.dooioo.com/public/css/main.css" />
+<link type="text/css" rel="stylesheet" href="http://public.dui.dooioo.com/public/css/header.css" />
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/lib/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/fns.js"></script>
 
 <script type="text/javascript">
 	var headerParameters = 
@@ -27,7 +27,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 <!--头部开始-->
 <div id="new_header"></div>
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/header.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/header.js"></script>
 <!--头部结束-->
 
 <base href="/biyesheji/">
@@ -42,12 +42,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- footer end -->
 </div>
 
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/WdatePicker.js"></script>
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/validation.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/WdatePicker.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/validation.js"></script>
 
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/lib/angular.min.js"></script>
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/angular/directive/directive.js"></script>
-<script type="text/javascript" src="http://dui.dooioo.com/public/js/paginate.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/lib/angular.min.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/angular/directive/directive.js"></script>
+<script type="text/javascript" src="http://public.dui.dooioo.com/public/js/paginate.js"></script>
 <script type="text/javascript" src="/front/js/DemoApp.js"></script>
 <script type="text/javascript" src="/front/js/constant/Constants.js"></script>
 <script type="text/javascript" src="/front/js/controllers/ListController.js"></script>

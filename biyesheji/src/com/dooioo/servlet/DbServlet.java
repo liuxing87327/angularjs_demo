@@ -73,6 +73,10 @@ public class DbServlet extends HttpServlet {
 		if(requestUrl.endsWith("add")) {
 			this.add(request, response);
 		}
+		
+		if(requestUrl.endsWith("initDate")) {
+			this.initDate(request, response);
+		}
 	}
 	
 	/**
@@ -164,6 +168,29 @@ public class DbServlet extends HttpServlet {
 		Map<String, Object> map = new HashMap<>();
 		
 		if(mongoService.update(userCode, userName, orgName, position, createdAt, status)){
+			map.put("status", "ok");
+		} else {
+			map.put("status", "fail");
+		}
+		
+		String json = JSON.toJSONString(map);
+		this.write(json, response);
+	}
+	
+	/**
+	 * 
+	 * 功能说明：初始化列表数据
+	 * @author 刘兴 
+	 * @Date 2014年10月26日 下午11:00:59
+	 * @param request
+	 * @param response
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 */
+	private void initDate(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
+		Map<String, Object> map = new HashMap<>();
+		
+		if(mongoService.initDate()){
 			map.put("status", "ok");
 		} else {
 			map.put("status", "fail");

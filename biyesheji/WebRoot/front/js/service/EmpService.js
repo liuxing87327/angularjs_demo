@@ -4,6 +4,15 @@
 demoApp.factory('empService', function($http){
 	var empService = {};
 	
+	//初始数据
+	empService.initDate = function($scope, params, callback){
+		$http.post('/db/initDate', params).success(function(response){
+    		if(response.status == "ok"){
+    			callback();
+    		}
+    	});
+	}
+	
 	//添加数据
 	empService.add = function($scope, params, callback){
 		$http.post('/db/add', params).success(function(response){
