@@ -14,15 +14,15 @@ import com.mongodb.ServerAddress;
 
 /**
  * 
- * 类功能说明：mongo连接池
+ * 类功能说明：本地mongo
  * Title: MongoClient.java
  * @author 刘兴
  * @date 2014年10月26日 下午4:26:01
  * @version V1.0
  */
-public class YunMongoClient2 {
+public class LocalMongoClient {
 	
-	private static YunMongoClient2 client;
+	private static LocalMongoClient client;
 	
     public static final String SERVER_IP;
     public static final int SERVER_PORT;
@@ -40,9 +40,9 @@ public class YunMongoClient2 {
     private DB db;
 
     static {
-        SERVER_IP = "mongo.duapp.com";
-        SERVER_PORT = 8908;
-        DB_NAME = "zQVqlLrEWYIrbQyuEjID";
+        SERVER_IP = "127.0.0.1";
+        SERVER_PORT = 27017;
+        DB_NAME = "test";
         CONNECTIONS = 10;
         AUTOCONNECTRETRY = true;
         THREADSALLOWEDTOBLOCKFORCONNECTIONMULTIPLIER = 20;
@@ -51,7 +51,7 @@ public class YunMongoClient2 {
         CONNECTTIMEOUT = 5000;
     }
 
-    private YunMongoClient2() throws Exception {
+    private LocalMongoClient() throws Exception {
         MongoOptions options = new MongoOptions();
         // 连接错误时，是否重试
         options.autoConnectRetry = AUTOCONNECTRETRY;
@@ -70,7 +70,6 @@ public class YunMongoClient2 {
         Mongo connection = new Mongo(buildHostList(), options);
         
         db = connection.getDB(DB_NAME);
-        db.authenticate(username, password.toCharArray());
     }
     
     private List<ServerAddress> buildHostList() throws UnknownHostException{
@@ -84,9 +83,9 @@ public class YunMongoClient2 {
 		return mongoHostList;
     }
 
-    public static synchronized YunMongoClient2 getInstance() {
+    public static synchronized LocalMongoClient getInstance() {
     	try {
-    		client = new YunMongoClient2();
+    		client = new LocalMongoClient();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -145,7 +144,7 @@ public class YunMongoClient2 {
     }
     
     public static void main(String[] args) {
-    	DBCollection dbCollection = YunMongoClient2.getInstance().getEmployee();
-    	YunMongoClient2.getInstance().dropDatabase(dbCollection);
+    	DBCollection dbCollection = LocalMongoClient.getInstance().getEmployee();
+    	LocalMongoClient.getInstance().dropDatabase(dbCollection);
 	}
 }

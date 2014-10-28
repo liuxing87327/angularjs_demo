@@ -34,7 +34,7 @@ import com.mongodb.DBObject;
 public class MongoService {
 
 	private DBCollection getDBCollection(){
-		return YunMongoClient2.getInstance().getEmployee();
+		return YunMongoClient.getInstance().getEmployee();
 	}
 	
     /**

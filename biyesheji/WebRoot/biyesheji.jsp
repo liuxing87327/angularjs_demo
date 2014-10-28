@@ -53,5 +53,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="/front/js/controllers/ListController.js"></script>
 <script type="text/javascript" src="/front/js/controllers/DetailController.js"></script>
 <script type="text/javascript" src="/front/js/service/EmpService.js"></script>
+<script type="text/javascript" src="/front/js/service/UrlParseService.js"></script>
 </body>
 </html>

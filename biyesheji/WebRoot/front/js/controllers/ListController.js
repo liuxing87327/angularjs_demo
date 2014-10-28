@@ -1,4 +1,4 @@
-demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $filter, constants, empService){
+demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $filter, constants, urlParseService, empService){
 
     document.getElementsByTagName("title").item(0).innerText = ("人员管理 - 德佑地产");
 
@@ -13,12 +13,24 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $filter, cons
     $scope.search = function(){
         $scope.params.keyword = $scope.keyword;
     };
-    
+
+    //初始化参数
+    $scope.params = $.extend({}, angular.copy($scope.params), $location.search());
+
     //监听参数的变更
-    $scope.$watch('params', function (value) {
-        query();
+    $scope.$watch('params', function (newValue,oldValue) {
+        if (!oldValue) {
+            return false;
+        }
+
+        if(newValue !== oldValue){
+            var params = urlParseService.buildSearch(angular.copy($scope.params));
+            $location.search(params);
+        }else{
+            query();
+        }
     }, true);
-    
+
     //删除操作
     $scope.remove = function(id){
     	if(window.confirm("确定要删除此人员吗？")){

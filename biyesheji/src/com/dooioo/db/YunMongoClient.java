@@ -14,7 +14,7 @@ import com.mongodb.MongoCredential;
 
 /**
  * 
- * 类功能说明：mongo连接池
+ * 类功能说明：百度云的Mongodb
  * Title: MongoClient.java
  * @author 刘兴
  * @date 2014年10月26日 下午4:26:01
@@ -27,9 +27,9 @@ public class YunMongoClient {
     private DB db;
 
     private YunMongoClient() throws Exception {
-		String databaseName = "test";
-		String host = "127.0.0.1";
-		String port = "27017";
+		String databaseName = "zQVqlLrEWYIrbQyuEjID";
+		String host = "mongo.duapp.com";
+		String port = "8908";
 		String username = "URrRt070VEvNA1ejIzNennVC";
 		String password = "mWFaNXeU097nCPZLwG6V1yjPOI592oXn";
 		String serverName = host + ":" + port;
@@ -37,8 +37,8 @@ public class YunMongoClient {
       	MongoClient mongoClient = new MongoClient(new ServerAddress(serverName),
 									Arrays.asList(MongoCredential.createMongoCRCredential(username, databaseName, password.toCharArray())),
 									new MongoClientOptions.Builder().cursorFinalizerEnabled(false).build());
-		DB testDB = mongoClient.getDB(databaseName);
-//		testDB.authenticate(username, password.toCharArray());
+		db = mongoClient.getDB(databaseName);
+		db.authenticate(username, password.toCharArray());
 //		mongoClient.close();
 		
 //		String server = "mongo.duapp.com";
