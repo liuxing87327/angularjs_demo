@@ -4,7 +4,8 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
 
     $scope.constants = constants;
     $scope.empService = empService;
-    $scope.editEmployee = {};
+    
+    $scope.employee = {};
     
     $scope.params = {};
     $scope.params.status = "";
@@ -16,8 +17,9 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
 
     //初始化参数
     $scope.params = $.extend({}, angular.copy($scope.params), $location.search());
+    $scope.keyword = angular.copy($scope.params.keyword);
 
-    //监听参数的变更
+    //监听筛选参数的变更
     $scope.$watch('params', function (newValue,oldValue) {
         if (!oldValue) {
             return false;
@@ -27,9 +29,18 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
             var params = urlParseService.buildSearch(angular.copy($scope.params));
             $location.search(params);
         }else{
-            query();
+        	$scope.query();
         }
     }, true);
+    
+    //监听员工操作结果参数的变更
+    $scope.$watch('employee.finished', function (value) {
+        if (!value) {
+            return false;
+        }
+
+        $scope.query();
+    });
     
     //初始化数据
     $scope.initDate = function(){
@@ -37,69 +48,54 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     		var params = {};
         	var callback = function(){
         		console.log("数据已经重置！");
-        		query();
+        		$scope.query();
             };
             
-            $scope.empService.initDate($scope, params, callback);
+            $scope.empService.initDate(params, callback);
+    	}
+    }
+    
+    //弹层新增
+    $scope.toEmployeeAdd = function(){
+    	$scope.employee.oper = "add";
+    }
+    
+    //弹层编辑
+    $scope.toEmployeeUpdate = function(id){
+    	for(var index in $scope.list.pageList){
+    		var employee = $scope.list.pageList[index];
+    		if(employee.userCode == id){
+    			$scope.employee.editEmployee = angular.copy(employee);
+    			$scope.employee.editEmployee.createdAt = $filter('date')($scope.employee.editEmployee.createdAt, 'yyyy-MM-dd');
+    			$scope.employee.oper = "update";
+    			break;
+    		}
     	}
     }
 
     //删除操作
     $scope.remove = function(id){
     	if(window.confirm("确定要删除此人员吗？")){
-    		remove(id);
+    		var params = {};
+        	params.userCode = id;
+        	
+        	var callback = function(response){
+        		$scope.query();
+            };
+            
+            $scope.empService.remove(params, callback);
     	}
     };
-    
-    //弹层编辑
-    $scope.toUpdate = function(id){
-    	for(var index in $scope.list.pageList){
-    		var employee = $scope.list.pageList[index];
-    		if(employee.userCode == id){
-    			$scope.editEmployee = angular.copy(employee);
-    			$scope.editEmployee.operValue = "编辑";
-    			$scope.editEmployee.createdAt = $filter('date')($scope.editEmployee.createdAt, 'yyyy-MM-dd');
-    		}
-    	}
-    	
-    	showPopupDiv($('#layer_edit'));
-    }
-    
-    //弹层新增
-    $scope.toAdd = function(){
-    	$scope.editEmployee = {};    	
-    	$scope.editEmployee.operValue = "新增";
-    	showPopupDiv($('#layer_edit'));
-    }
-    
-    //保存数据
-    $scope.save = function(){
-    	var validator = $('#formEdit').validate();
-		if(validator.validateForm()){
-			addOrUpdate();
-		};
-    }
-
-    /**
-     * 判断编辑还是新增
-     */
-    function addOrUpdate(){
-    	if($scope.editEmployee.userCode > 0){
-    		update();
-    	}else{
-    		add();
-    	}
-    }
     
     /**
      * 查询后台的jsonList数据
      */
-    function query(){
+    $scope.query = function(){
     	$scope.loadStatus = true;
     	
         var params = angular.copy($scope.params);
         
-        var callback = function($scope, response){
+        var callback = function(response){
         	$scope.list = response.paginate || {};
 
     		if(Number($scope.params.pageNo) > $scope.list.totalPage){
@@ -110,53 +106,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     		
         };
         
-        $scope.empService.query($scope, params, callback);
-    }
-    
-    /**
-     * 删除数据
-     */
-    function remove(id){
-    	var params = {};
-    	params.userCode = id;
-    	
-    	var callback = function(){
-    		query();
-        };
-        
-        $scope.empService.remove($scope, params, callback);
-    }
-    
-    /**
-     * 编辑数据
-     */
-    function update(){
-    	var params = angular.copy($scope.editEmployee);
-    	
-    	var callback = function(){
-    		hidePopupDiv($("#layer_edit"));
-    		query();
-        };
-        
-        $scope.empService.update($scope, params, callback);
-    	
-    	$scope.editEmployee = {};
-    }
-    
-    /**
-     * 新增数据
-     */
-    function add(){
-    	var params = angular.copy($scope.editEmployee);
-    	
-    	var callback = function(){
-    		hidePopupDiv($("#layer_edit"));
-    		query();
-        };
-        
-        $scope.empService.add($scope, params, callback);
-    	
-    	$scope.editEmployee = {};
+        $scope.empService.query(params, callback);
     }
     
 });

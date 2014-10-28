@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		{ 	empNo:'83290',
 			empName:'刘兴',
 			password:'sf51170c65c3a68a9af6ff1c3d27efe8',
-			env:'production'
+			env:'test'
 		};
 </script>
 </head>
@@ -34,7 +34,76 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="container" ng-app="demoApp">
 	
 	<div ng-view></div>
-
+	
+	<!-- 人员新增和编辑的弹层 begin -->
+    <script	type="text/ng-template" id="popupEmployeeTpl">
+		<div class="popLayer bubbleBox" id="employee_layer_form">
+          <div class="bubbleBoxTitle clearfix">
+              <h1>{{popupParams.operValue}}人员信息</h1>
+              <div class="cls"><a href="javascript:;" class="closePopBox xx" ng-click="popupParams.showPopup = false"></a></div>
+          </div>
+          <div class="bubbleBoxCon pd_20">
+            <form id="formEdit">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tableFormNew mt_5">
+                    <tr>
+                        <td class="tdTitle" width="150">姓名：</td>
+                        <td class="request" width="20">●</td>
+                        <td><input type="text" class="txtNew" value="" ng-model="popupParams.editEmployee.userName" name="userName" rule="required" maxlength="20" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">部门：</td>
+                        <td class="request">●</td>
+                        <td>
+                            <select name="org" ng-model="popupParams.editEmployee.orgName" ng-options="orgName as orgName for orgName in constants.orgNames" rule="required">
+                                <option value="">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">岗位：</td>
+                        <td class="request">●</td>
+                        <td>
+                            <select name="position" ng-model="popupParams.editEmployee.position" ng-options="position as position for position in constants.positions" rule="required">
+                                <option value="">请选择</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">入职日期：</td>
+                        <td class="request">●</td>
+                        <td>
+                            <input type="text" class="txtDate" ng-model="$parent.popupParams.editEmployee.createdAt" date-picker readonly="readonly" rule="required"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdTitle">状态：</td>
+                        <td class="request">●</td>
+                        <td>
+                            <label>
+                                <input type="radio" value="正式" ng-model="popupParams.editEmployee.status" name="status" rule="required" groupby="status" />正式
+                            </label>
+                            <label class="ml_20">
+                                <input type="radio" value="试用" ng-model="popupParams.editEmployee.status" name="status" rule="required" groupby="status" />试用
+                            </label>
+                            <label class="ml_20">
+                                <input type="radio" value="离职" ng-model="popupParams.editEmployee.status" name="status" rule="required" groupby="status" />离职
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+          </div>
+          <div class="bubbleBoxBtn">
+			  <span class="bold red in_block mt_5 mr_20">{{popupParams.message}}</span>
+              <a href="javascript:;" class="btn-small btn-silver in_block" ng-click="popupParams.showPopup = false">关闭</a>
+              <a href="javascript:;" ng-show="popupParams.oper == 'add'" class="btn-small btn-blue in_block" id="btn_submit" ng-click="add()">提交</a>
+			  <a href="javascript:;" ng-show="popupParams.oper == 'update'" class="btn-small btn-blue in_block" id="btn_submit" ng-click="update()">提交</a>
+          </div>
+        </div>
+    </script>
+    <!-- 点评弹层 end -->
+	
 	<!-- footer begin -->
 	<div class="footer clearFix">
 		©2014  德佑地产 版本号:2.1.6
@@ -54,5 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="/front/js/controllers/DetailController.js"></script>
 <script type="text/javascript" src="/front/js/service/EmpService.js"></script>
 <script type="text/javascript" src="/front/js/service/UrlParseService.js"></script>
+<script type="text/javascript" src="/front/js/directive/EmployeeDirective.js"></script>
+
 </body>
 </html>

@@ -5,7 +5,7 @@ demoApp.factory('empService', function($http){
 	var empService = {};
 	
 	//初始数据
-	empService.initDate = function($scope, params, callback){
+	empService.initDate = function(params, callback){
 		$http.post('/db/initDate', params).success(function(response){
     		if(response.status == "ok"){
     			callback();
@@ -14,36 +14,44 @@ demoApp.factory('empService', function($http){
 	}
 	
 	//添加数据
-	empService.add = function($scope, params, callback){
+	empService.add = function(params, okCallback, failCallback, errorCallback){
 		$http.post('/db/add', params).success(function(response){
     		if(response.status == "ok"){
-    			callback();
+    			okCallback(response);
+    		}else{
+    			failCallback(response);
     		}
-    	});
+    	}).error(function(){
+    		errorCallback();
+    	});;
 	}
 	
 	//更新数据
-	empService.update = function($scope, params, callback){
+	empService.update = function(params, okCallback, failCallback, errorCallback){
 		$http.post('/db/update', params).success(function(response){
     		if(response.status == "ok"){
-    			callback();
+    			okCallback(response);
+    		}else{
+    			failCallback(response);
     		}
-    	});
+    	}).error(function(){
+    		errorCallback();
+    	});;
 	}
 	
 	//删除数据
-	empService.remove = function($scope, params, callback){
+	empService.remove = function(params, callback){
 		$http.post('/db/delete', params).success(function(response){
     		if(response.status == "ok"){
-    			callback();
+    			callback(response);
     		}
     	});
 	}
 	
 	//查询列表
-	empService.query = function($scope, params, callback){
+	empService.query = function(params, callback){
 		$http.get('/db/query', {params:params}).success(function(response){
-    		callback($scope, response);
+    		callback(response);
     	});
 	}
 	
