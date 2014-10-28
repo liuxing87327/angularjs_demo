@@ -1,0 +1,131 @@
+<div dui-processing processing="loadStatus">
+<h1 class="f18 mt_15">人员管理</h1>
+
+<!--搜索条件 begin -->
+<div class="boxWrapBlue pd_10 mt_15 clearfix">
+	<table width="780" cellspacing="0" cellpadding="3" border="0" class="left">
+		<tr>	
+			<td align="right" width="60">状态：</td>
+  			<td width="100">	
+                <select ng-model="params.status" ng-options="e.key as e.value for e in constants.empStatus">
+			        <option value="">请选择</option>
+			    </select>
+			</td>
+			<td width="60" align="right">入职日期：</td>
+  			<td width="180">	
+  				<input type="text" class="txtDate" ng-model="$parent.params.dateFrom" date-picker readonly="readonly" /> - <input type="text" class="txtDate" ng-model="$parent.params.dateTo" date-picker readonly="readonly" />
+			</td>
+			<td align="right">关键字：</td>
+  			<td>	
+				<input type="text" class="txtNew tt280" name="keyword" ng-model="keyword" id="keyword" placeholder="请输入工号或姓名">
+			</td>
+		</tr>
+    </table>
+	<div class="right center bdL_ccc" style="width:120px">
+		<a href="javascript:;" ng-click="search()" class="btn-small btn-blue in_block">搜索</a>
+	</div>
+</div>
+<!--搜索条件 end -->
+
+<!--搜索结果 begin -->
+<p class="clearfix mt_15">
+	<span class="left">共有 <b class="red">{{list.totalCount}}</b> 条符合条件的结果</span>
+	<span class="right">
+		<a href="javascript:;" class="btn-small btn-green in_block ml_10 js_add" ng-click="toAdd()">新增人员</a>
+	</span>
+</p>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="tableListNew mt_5">
+	<tr class="trHead">
+		<td>工号</td>
+		<td>姓名</td>
+		<td>部门</td>
+		<td>岗位</td>
+		<td>入职日期</td>
+		<td>状态</td>
+		<td>操作</td>
+	</tr>
+	<tr ng-repeat="employee in list.pageList">
+		<td>{{employee.userCode}}</td>
+		<td><a href="/biyesheji/detail/{{employee.userCode}}">{{employee.userName}}</a></td>
+		<td>{{employee.orgName}}</td>
+		<td>{{employee.position}}</td>
+		<td>{{employee.createdAt | date:'yyyy-MM-dd'}}</td>
+		<td>{{employee.status}}</td>
+		<td>
+			<a href="javascript:;" class="btn-small btn-silver in_block js_edit" ng-click="toUpdate(employee.userCode)">编辑</a>
+			<a href="javascript:;" class="btn-small btn-red in_block" ng-click="remove(employee.userCode)">删除</a>
+		</td>
+	</tr>
+</table>
+
+<!--搜索结果 end -->
+
+<div paginator display-num="5" show-jump="true" record-count="list.totalCount" page-size="list.pageSize" current-page="params.pageNo"></div>
+
+<!-- begin: 表单操作弹层 -->
+<div class="popLayer bubbleBox" id="layer_edit">
+  <div class="bubbleBoxTitle clearfix">
+      <h1>{{editEmployee.operValue}}人员信息</h1>
+      <div class="cls"><a href="javascript:;" class="closePopBox xx" onclick="hidePopupDiv($('#layer_edit'))"></a></div>
+  </div>
+  <div class="bubbleBoxCon pd_20">
+  	<form id="formEdit">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tableFormNew mt_5">
+			<tr>	
+				<td class="tdTitle" width="150">姓名：</td>
+				<td class="request" width="20">●</td>
+				<td><input type="text" class="txtNew" value="" ng-model="editEmployee.userName" name="userName" rule="required" maxlength="20" />
+				</td>
+			</tr>
+			<tr>
+				<td class="tdTitle">部门：</td>
+				<td class="request">●</td>
+				<td>	
+					<select name="org" ng-model="editEmployee.orgName" ng-options="orgName as orgName for orgName in constants.orgNames" rule="required">
+				        <option value="">请选择</option>
+				    </select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdTitle">岗位：</td>
+				<td class="request">●</td>
+				<td>	
+					<select name="position" ng-model="editEmployee.position" ng-options="position as position for position in constants.positions" rule="required">
+				        <option value="">请选择</option>
+				    </select>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdTitle">入职日期：</td>
+				<td class="request">●</td>
+				<td>
+					<input type="text" class="txtDate" ng-model="$parent.editEmployee.createdAt" date-picker readonly="readonly" rule="required"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdTitle">状态：</td>
+				<td class="request">●</td>
+				<td>	
+					<label>
+						<input type="radio" value="正式" ng-model="editEmployee.status" name="status" rule="required" groupby="status" />正式
+					</label>
+					<label class="ml_20">
+						<input type="radio" value="试用" ng-model="editEmployee.status" name="status" rule="required" groupby="status" />试用
+					</label>
+					<label class="ml_20">
+						<input type="radio" value="离职" ng-model="editEmployee.status" name="status" rule="required" groupby="status" />离职
+					</label>
+				</td>
+			</tr>
+		</table>
+	</form>
+  </div>
+  <div class="bubbleBoxBtn">
+      <a href="javascript:;" class="btn-small btn-silver in_block" onclick="hidePopupDiv($('#layer_edit'))">关闭</a>
+      <a href="javascript:;" class="btn-small btn-blue in_block" id="btn_submit" ng-click="save()">提交</a>
+  </div>
+</div><br />
+<!-- begin: 表单操作弹层 -->
+
+</div>

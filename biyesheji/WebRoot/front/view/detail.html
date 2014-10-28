@@ -1,0 +1,30 @@
+
+<div class="location"><a href="/biyesheji/list">人员管理</a> &gt; </div>
+<h1 class="f18 mt_15">人员详情</h1>
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="tableFormNew mt_5">
+	<tr>	
+		<td class="tdTitle" width="150">工号：</td>
+		<td class="bold">{{employee.userCode}}</td>
+	</tr>
+	<tr>	
+		<td class="tdTitle" width="150">姓名：</td>
+		<td class="bold">{{employee.userName}}</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">部门：</td>
+		<td class="bold">{{employee.orgName}}</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">岗位：</td>
+		<td class="bold">{{employee.position}}</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">入职日期：</td>
+		<td class="bold">{{employee.createdAt | date:'yyyy-MM-dd'}}</td>
+	</tr>
+	<tr>
+		<td class="tdTitle">状态：</td>
+		<td class="bold">{{employee.status}}</td>
+	</tr>
+   </table>
