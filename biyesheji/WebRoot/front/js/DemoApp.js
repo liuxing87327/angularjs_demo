@@ -1,4 +1,4 @@
-var demoApp = angular.module('demoApp', ['dui.directive']);
+var demoApp = angular.module('demoApp', ['dui.directive', 'myDemo.directive']);
 
 demoApp.config(function($routeProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
