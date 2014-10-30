@@ -2,6 +2,7 @@ package com.dooioo.db;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mongodb.BasicDBObject;
@@ -9,6 +10,9 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.MongoCredential;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 
@@ -20,76 +24,87 @@ import com.mongodb.ServerAddress;
  * @date 2014年10月26日 下午4:26:01
  * @version V1.0
  */
-public class MongoClient {
+public class MongoDbClient {
 	
-    private static MongoClient client;
-
-    public static final String SERVER_IP;
-    public static final int SERVER_PORT;
-    public static final int CONNECTIONS;
-
-    public static final String DB_NAME;
-    public static final boolean AUTOCONNECTRETRY;
-    public static final int THREADSALLOWEDTOBLOCKFORCONNECTIONMULTIPLIER;
-    public static final int MAXWAITTIME;
-    public static final int SOCKETTIMEOUT;
-    public static final int CONNECTTIMEOUT;
-    public static final String username = "URrRt070VEvNA1ejIzNennVC";			//用户名(api key);
-    public static final String password = "0rSonRiz2GMg9PgBn9pEeQKceUO1ca0X";	//密码(secret key)
-
-    private Mongo connection;
+private static MongoDbClient client;
+	
     private DB db;
-
-    static {
-        SERVER_IP = "127.0.0.1";
-        SERVER_PORT = 27017;
-        DB_NAME = "test";
-        CONNECTIONS = 10;
-        AUTOCONNECTRETRY = true;
-        THREADSALLOWEDTOBLOCKFORCONNECTIONMULTIPLIER = 20;
-        MAXWAITTIME = 5000;
-        SOCKETTIMEOUT = 3000;
-        CONNECTTIMEOUT = 5000;
+    private boolean isLocal = false;
+    
+    private MongoDbClient() throws Exception {
+    	if(this.isLocal){
+			this.initDbFromLocal();
+		} else {
+			this.initDbFromYun();
+		}
+    }	
+    
+    /**
+     * 
+     * 功能说明：初始化百度云的mongodb连接
+     * @author 刘兴 
+     * @Date 2014年10月31日 上午2:01:21
+     * @throws UnknownHostException
+     */
+    private void initDbFromYun() throws UnknownHostException{
+    	String databaseName = "zQVqlLrEWYIrbQyuEjID";
+		String host = "mongo.duapp.com";
+		String port = "8908";
+		String username = "URrRt070VEvNA1ejIzNennVC";
+		String password = "mWFaNXeU097nCPZLwG6V1yjPOI592oXn";
+		String serverName = host + ":" + port;
+      
+      	MongoClient mongoClient = new MongoClient(new ServerAddress(serverName),
+									Arrays.asList(MongoCredential.createMongoCRCredential(username, databaseName, password.toCharArray())),
+									new MongoClientOptions.Builder().cursorFinalizerEnabled(false).build());
+		db = mongoClient.getDB(databaseName);
+		db.authenticate(username, password.toCharArray());
     }
-
-    private MongoClient() throws Exception {
-        MongoOptions options = new MongoOptions();
+    
+    /**
+     * 
+     * 功能说明：初始化本地的mongodb连接
+     * @author 刘兴 
+     * @Date 2014年10月31日 上午2:01:45
+     * @throws UnknownHostException
+     */
+    private void initDbFromLocal() throws UnknownHostException{
+    	MongoOptions options = new MongoOptions();
         // 连接错误时，是否重试
-        options.autoConnectRetry = AUTOCONNECTRETRY;
+        options.autoConnectRetry = true;
         // 连接池
-        options.connectionsPerHost = CONNECTIONS;
+        options.connectionsPerHost = 10;
         // 线程队列数
-        options.threadsAllowedToBlockForConnectionMultiplier = THREADSALLOWEDTOBLOCKFORCONNECTIONMULTIPLIER;
+        options.threadsAllowedToBlockForConnectionMultiplier = 20;
         // 最大等待连接的线程阻塞时间
-        options.maxWaitTime = MAXWAITTIME;
+        options.maxWaitTime = 5000;
         // socket超时。0是默认和无限
-        options.socketTimeout = SOCKETTIMEOUT;
+        options.socketTimeout = 3000;
         // 连接超时的毫秒。0是默认和无限
-        options.connectTimeout = CONNECTTIMEOUT;
-        options.cursorFinalizerEnabled = true;
-        connection = new Mongo(buildHostList(), options);
+        options.connectTimeout = 5000;
+        options.cursorFinalizerEnabled = false;
         
-        db = connection.getDB(DB_NAME);
+        Mongo connection = new Mongo(buildHostList(), options);
+        
+        db = connection.getDB("test");
     }
     
     private List<ServerAddress> buildHostList() throws UnknownHostException{
 		List<ServerAddress> mongoHostList = new ArrayList<ServerAddress>();
 		
-		String[] servers = SERVER_IP.split("/");
+		String[] servers = "127.0.0.1".split("/");
 		for (String serverIp : servers) {
-			mongoHostList.add(new ServerAddress(serverIp, SERVER_PORT));
+			mongoHostList.add(new ServerAddress(serverIp, 27017));
 		}
 		
 		return mongoHostList;
     }
 
-    public static synchronized MongoClient getInstance() {
-        if (client == null){
-        	try {
-        		client = new MongoClient();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+    public static synchronized MongoDbClient getInstance() {
+    	try {
+    		client = new MongoDbClient();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return client;
     }
@@ -146,7 +161,8 @@ public class MongoClient {
     }
     
     public static void main(String[] args) {
-    	DBCollection dbCollection = MongoClient.getInstance().getEmployee();
-    	MongoClient.getInstance().dropDatabase(dbCollection);
+    	DBCollection dbCollection = LocalMongoClient.getInstance().getEmployee();
+    	LocalMongoClient.getInstance().dropDatabase(dbCollection);
 	}
+    
 }

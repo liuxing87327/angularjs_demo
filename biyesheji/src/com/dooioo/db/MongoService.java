@@ -35,7 +35,7 @@ import com.mongodb.DBObject;
 public class MongoService {
 
 	private DBCollection getDBCollection(){
-		return YunMongoClient.getInstance().getEmployee();
+		return MongoDbClient.getInstance().getEmployee();
 	}
 	
     /**
@@ -203,7 +203,7 @@ public class MongoService {
 	 * @return
 	 */
 	public boolean initDate(){
-		YunMongoClient client = YunMongoClient.getInstance();
+		MongoDbClient client = MongoDbClient.getInstance();
 		
 		DBCollection db = client.getEmployee();
     	

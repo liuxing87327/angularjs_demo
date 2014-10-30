@@ -39,19 +39,6 @@ public class YunMongoClient {
 									new MongoClientOptions.Builder().cursorFinalizerEnabled(false).build());
 		db = mongoClient.getDB(databaseName);
 		db.authenticate(username, password.toCharArray());
-//		mongoClient.close();
-		
-//		String server = "mongo.duapp.com";
-//		String port = "8908";
-//		String host = server + ":" + port;
-//		String user = "URrRt070VEvNA1ejIzNennVC";
-//		String password = "mWFaNXeU097nCPZLwG6V1yjPOI592oXn";
-//		String databaseName = "TEVLZmAPWMBCpAlVcKWz";
-//		MongoClient mongoClient = new MongoClient(new ServerAddress(host),
-//		Arrays.asList(MongoCredential.createMongoCRCredential(user, databaseName, password.toCharArray())),
-//		new MongoClientOptions.Builder().cursorFinalizerEnabled(false).build());
-//		DB testDB = mongoClient.getDB(databaseName);
-//		testDB.authenticate(user, password.toCharArray());
     }
     
     public static synchronized YunMongoClient getInstance() {
