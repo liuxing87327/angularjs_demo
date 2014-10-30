@@ -255,12 +255,12 @@ public class MongoService {
 		
 		BasicDBList userList = new BasicDBList();
 		
-		//筛选工号和名字
+		//筛选工号和名字,模糊查询，不区分大小写
 		if(keyword != null && !"".equals(keyword)){
-			BasicDBObject condUserCode = new BasicDBObject("userCode", Pattern.compile("^" + filterTag(keyword)));
+			BasicDBObject condUserCode = new BasicDBObject("userCode", Pattern.compile("^.*"  + filterTag(keyword) + ".*$", Pattern.CASE_INSENSITIVE));
 			userList.add(condUserCode);
 		
-			BasicDBObject condUserName = new BasicDBObject("userName", Pattern.compile("^" + filterTag(keyword)));
+			BasicDBObject condUserName = new BasicDBObject("userName", Pattern.compile("^.*"  + filterTag(keyword) + ".*$", Pattern.CASE_INSENSITIVE));
 			userList.add(condUserName);
 		}
 		
