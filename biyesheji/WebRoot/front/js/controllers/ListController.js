@@ -33,9 +33,18 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
         }
     }, true);
     
-    //监听员工操作结果参数的变更
+    //监听员工操作结果参数的变更（状态位的方式）
     $scope.$watch('employee.finished', function (value) {
-        if (!value) {
+//        if (!value) {
+//            return false;
+//        }
+//
+//        $scope.query();
+    });
+    
+    //监听员工操作结果参数的变更（消息通知的方式）
+    $scope.$on('employee.finished', function(d, data) {
+    	if (!data) {
             return false;
         }
 

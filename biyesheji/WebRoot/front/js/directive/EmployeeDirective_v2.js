@@ -51,20 +51,20 @@
 	        		
 	        		var params = angular.copy(scope.popupParams.editEmployee);
 	        		
-	        		var okCallback = function(){
+	                empService.add(params, function(){
 	        			scope.popupParams.showPopup = false;
+	        			
+	        			//使用状态位标记处理完毕，父类监听
 	        			scope.popupParams.finished = true;
-	                };
-	                
-	                var failCallback = function(data){
+	        			
+	        			//发送处理完毕的通知给父类
+	        			scope.$emit('employee.finished', true);
+	        			
+	                }, function(data){
 	                	scope.popupParams.message = "保存失败!" + data.message;
-	                };
-	                
-	                var errorCallback = function(){
+	                }, function(){
 	                	scope.popupParams.message = "保存失败，请重试！";
-	                };
-	                
-	                empService.add(params, okCallback, failCallback, errorCallback);
+	                });
 	            }
 	            
 	            //保存编辑
@@ -76,20 +76,20 @@
 	
 	        		var params = angular.copy(scope.popupParams.editEmployee);
 	        		
-	        		var okCallback = function(){
+	                empService.update(params, function(){
 	        			scope.popupParams.showPopup = false;
+	        			
+	        			//使用状态位标记处理完毕，父类监听
 	        			scope.popupParams.finished = true;
-	                };
-	                
-	                var failCallback = function(data){
+	        			
+	        			//发送处理完毕的通知给父类
+	        			scope.$emit('employee.finished', true);
+	        			
+	                }, function(data){
 	                	scope.popupParams.message = "保存失败!" + data.message;
-	                };
-	                
-	                var errorCallback = function(){
+	                }, function(){
 	                	scope.popupParams.message = "保存失败，请重试！";
-	                };
-	                
-	                empService.update(params, okCallback, failCallback, errorCallback);
+	                });
 	            }
 	         }
 	    };
