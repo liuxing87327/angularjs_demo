@@ -29,7 +29,7 @@ public class MongoDbClient {
 private static MongoDbClient client;
 	
     private DB db;
-    private boolean isLocal = false;
+    private boolean isLocal = true;
     
     private MongoDbClient() throws Exception {
     	if(this.isLocal){
@@ -159,10 +159,5 @@ private static MongoDbClient client;
         dbCollection.createIndex(new BasicDBObject("userName", 1)); // 1代表升序
         dbCollection.createIndex(new BasicDBObject("createdAt", 1)); // 1代表升序
     }
-    
-    public static void main(String[] args) {
-    	DBCollection dbCollection = LocalMongoClient.getInstance().getEmployee();
-    	LocalMongoClient.getInstance().dropDatabase(dbCollection);
-	}
     
 }
