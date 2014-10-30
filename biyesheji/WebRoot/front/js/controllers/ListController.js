@@ -44,6 +44,8 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     
     //监听员工操作结果参数的变更（消息通知的方式）
     $scope.$on('employee.finished', function(d, data) {
+    	console.log('收到employee组件发来的消息：' + data);
+    	
     	if (!data) {
             return false;
         }
@@ -64,12 +66,9 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     	}
     }
     
-    //弹层新增
-    $scope.toEmployeeAdd = function(){
-    	$scope.employee.oper = "add";
-    }
-    
-    //弹层编辑
+    /**
+     * 弹层编辑
+     */
     $scope.toEmployeeUpdate = function(id){
     	for(var index in $scope.list.pageList){
     		var employee = $scope.list.pageList[index];
@@ -82,7 +81,9 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     	}
     }
 
-    //删除操作
+    /**
+     * 删除操作
+     */
     $scope.remove = function(id){
     	if(window.confirm("确定要删除此人员吗？")){
     		var params = {};
