@@ -7,3 +7,5 @@ biyesheji/.settings/org.eclipse.jdt.core.prefs
 biyesheji/.settings/org.eclipse.wst.common.component
 
 biyesheji/.settings/org.eclipse.wst.common.project.facet.core.xml
+
+biyesheji/target/*
