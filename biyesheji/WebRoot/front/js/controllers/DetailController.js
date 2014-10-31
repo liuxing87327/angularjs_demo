@@ -1,7 +1,4 @@
 demoApp.controller('DetailCtrl', function($scope, $http, $rootScope, $filter, $routeParams, empService){
-    $rootScope.currentTitle = "详情";
-
-    document.getElementsByTagName("title").item(0).innerText = ($rootScope.currentTitle + " - 人员管理 - 德佑地产");
 
     $scope.empService = empService;
 

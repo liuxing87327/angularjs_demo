@@ -1,7 +1,5 @@
 demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $filter, constants, urlParseService, empService){
 
-    document.getElementsByTagName("title").item(0).innerText = ("人员管理 - 德佑地产");
-
     $scope.constants = constants;
     $scope.empService = empService;
     
