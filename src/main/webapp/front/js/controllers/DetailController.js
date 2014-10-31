@@ -17,7 +17,7 @@ demoApp.controller('DetailCtrl', function($scope, $http, $rootScope, $filter, $r
         var params = angular.copy($scope.params);
         console.log(params);
         
-        $http.get('/db/findOne', {params:params}).success(function(response){
+        $http.get('/data/api/findOne', {params:params}).success(function(response){
             $scope.employee = response || {};
         });
     }

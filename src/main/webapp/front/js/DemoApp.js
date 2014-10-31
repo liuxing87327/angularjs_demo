@@ -60,7 +60,7 @@ demoApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 });
 
 demoApp.run(function($rootScope, $http){
-	$rootScope.mainUrl = '';//主请求
+	$rootScope.mainUrl = '/angularjs-demo/';//主请求
 	
 	$rootScope.$on('$routeChangeStart', function(event, next, current){
 		//路由跳转前自动设置title，值在when中自定义参数

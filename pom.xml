@@ -48,7 +48,7 @@
   
   <!-- 插件配置 -->
   <build>
-    	<!--<finalName>ROOT</finalName>-->
+    	<finalName>ROOT</finalName>
         <defaultGoal>war</defaultGoal>
         <!-- 设定资源文件的存放地址，根据不同的环境设置不同的目录 -->
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>

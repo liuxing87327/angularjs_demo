@@ -6,7 +6,7 @@ demoApp.factory('empService', function($http){
 	
 	//初始数据
 	empService.initDate = function(params, callback){
-		$http.post('/db/initDate', params).success(function(response){
+		$http.post('/data/api/initDate', params).success(function(response){
     		if(response.status == "ok"){
     			callback();
     		}
@@ -15,7 +15,7 @@ demoApp.factory('empService', function($http){
 	
 	//添加数据
 	empService.add = function(params, okCallback, failCallback, errorCallback){
-		$http.post('/db/add', params).success(function(response){
+		$http.post('/data/api/add', params).success(function(response){
     		if(response.status == "ok"){
     			okCallback(response);
     		}else{
@@ -28,7 +28,7 @@ demoApp.factory('empService', function($http){
 	
 	//更新数据
 	empService.update = function(params, okCallback, failCallback, errorCallback){
-		$http.post('/db/update', params).success(function(response){
+		$http.post('/data/api/update', params).success(function(response){
     		if(response.status == "ok"){
     			okCallback(response);
     		}else{
@@ -41,7 +41,7 @@ demoApp.factory('empService', function($http){
 	
 	//删除数据
 	empService.remove = function(params, callback){
-		$http.post('/db/delete', params).success(function(response){
+		$http.post('/data/api/delete', params).success(function(response){
     		if(response.status == "ok"){
     			callback(response);
     		}
@@ -50,7 +50,7 @@ demoApp.factory('empService', function($http){
 	
 	//查询列表
 	empService.query = function(params, callback){
-		$http.get('/db/query', {params:params}).success(function(response){
+		$http.get('/data/api/query', {params:params}).success(function(response){
     		callback(response);
     	});
 	}

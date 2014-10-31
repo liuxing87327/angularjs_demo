@@ -17,21 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 类功能说明：
+ * 类功能说明：首页
  * Title: DemoServlet.java
  * @author 刘兴
  * @date 2014年10月26日 下午1:58:52
  * @version V1.0
  */
-public class DemoServlet extends HttpServlet {
+public class IndexServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 6093570236560735330L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse response)
-			throws ServletException, IOException {
-		RequestDispatcher dispatcher = req.getRequestDispatcher("/biyesheji.jsp");
+	protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatcher = req.getRequestDispatcher("/index.jsp");
 		dispatcher.forward(req, response);
 	}
-
+	
 }

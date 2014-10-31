@@ -22,13 +22,13 @@ import com.alibaba.fastjson.JSON;
 import com.dooioo.db.MongoService;
 
 /**
- * 类功能说明：
+ * 类功能说明：数据CURD相关操作的接口
  * Title: MongoDBBasic.java
  * @author 刘兴
  * @date 2014年10月26日 下午4:15:23
  * @version V1.0
  */
-public class DbServlet extends HttpServlet { 
+public class ApiServlet extends HttpServlet { 
 	 
 	private static final long serialVersionUID = 3553230795361397498L;
 	

@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>biyesheji</display-name>
+  <display-name>angularjs-demo</display-name>
   
   <servlet>
-  	<servlet-name>biyesheji</servlet-name>
-    <servlet-class>com.dooioo.servlet.DemoServlet</servlet-class>
+    <servlet-name>angularjs-demo</servlet-name>
+    <servlet-class>com.dooioo.servlet.IndexServlet</servlet-class>
   </servlet>
+  
   <servlet-mapping>
-    <servlet-name>biyesheji</servlet-name>
-    <url-pattern>/biyesheji/*</url-pattern>
+    <servlet-name>angularjs-demo</servlet-name>
+    <url-pattern>/angularjs-demo/*</url-pattern>
   </servlet-mapping>
   
   <servlet>
-  	<servlet-name>db</servlet-name>
-    <servlet-class>com.dooioo.servlet.DbServlet</servlet-class>
+    <servlet-name>data-api</servlet-name>
+    <servlet-class>com.dooioo.servlet.ApiServlet</servlet-class>
   </servlet>
+  
   <servlet-mapping>
-    <servlet-name>db</servlet-name>
-    <url-pattern>/db/*</url-pattern>
+    <servlet-name>data-api</servlet-name>
+    <url-pattern>/data/api/*</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>redirect.jsp</welcome-file>
   </welcome-file-list>
+  
 </web-app>
