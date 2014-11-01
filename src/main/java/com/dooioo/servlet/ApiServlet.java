@@ -33,10 +33,16 @@ public class ApiServlet extends HttpServlet {
 	private static final long serialVersionUID = 3553230795361397498L;
 	
 	private MongoService mongoService = new MongoService();
-	
+
+    /**
+     * 查询入口
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
@@ -52,20 +58,22 @@ public class ApiServlet extends HttpServlet {
 		}
 		
 	}
-	
+
+    /**
+     * 提交数据入口
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		 
-		String requestUrl = request.getRequestURI();
-		
-		if(requestUrl.endsWith("delete")) {
-			this.delete(request, response);
-		}
-		
+
+        String requestUrl = request.getRequestURI();
+
 		if(requestUrl.endsWith("update")) {
 			this.update(request, response);
 		}
@@ -78,8 +86,27 @@ public class ApiServlet extends HttpServlet {
 			this.initDate(request, response);
 		}
 	}
-	
-	/**
+
+    /**
+     * 删除数据的入口
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        String requestUrl = request.getRequestURI();
+
+        if(requestUrl.endsWith("delete")) {
+            this.delete(request, response);
+        }
+    }
+
+    /**
 	 * 
 	 * 功能说明：查询列表
 	 * @author 刘兴 

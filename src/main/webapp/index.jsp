@@ -110,6 +110,8 @@
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/validation.js"></script>
 
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/lib/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/angular/directive/directive.js"></script>
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/paginate.js"></script>
 <script type="text/javascript" src="/front/js/DemoApp.js"></script>

@@ -55,12 +55,11 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     $scope.initDate = function(){
     	if(window.confirm("确定要删除旧数据，重新初始1000条数据？")){
     		var params = {};
-        	var callback = function(){
-        		console.log("数据已经重置！");
-        		$scope.query();
-            };
-            
-            $scope.empService.initDate(params, callback);
+
+            $scope.empService.initDate(params, function(response){
+                console.log("数据已经重置！");
+                $scope.query();
+            });
     	}
     }
     
@@ -87,11 +86,9 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     		var params = {};
         	params.userCode = id;
         	
-        	var callback = function(response){
-        		$scope.query();
-            };
-            
-            $scope.empService.remove(params, callback);
+            $scope.empService.remove(params, function(response){
+                $scope.query();
+            });
     	}
     };
     
@@ -103,18 +100,16 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     	
         var params = angular.copy($scope.params);
         
-        var callback = function(response){
-        	$scope.list = response.paginate || {};
+        $scope.empService.query(params, function(response){
+            $scope.list = response.paginate || {};
 
-    		if(Number($scope.params.pageNo) > $scope.list.totalPage){
-    			$scope.params.pageNo = $scope.list.totalPage;
+            if(Number($scope.params.pageNo) > $scope.list.totalPage){
+                $scope.params.pageNo = $scope.list.totalPage;
             }
 
-    		$scope.loadStatus = false;
-    		
-        };
-        
-        $scope.empService.query(params, callback);
+            $scope.loadStatus = false;
+
+        });
     }
     
 });

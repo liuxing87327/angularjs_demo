@@ -1,4 +1,4 @@
-demoApp.controller('DetailCtrl', function($scope, $http, $rootScope, $filter, $routeParams, empService){
+demoApp.controller('DetailCtrl', function($scope, $http, $rootScope, $filter, $resource, $routeParams, empService){
 
     $scope.empService = empService;
 
@@ -15,9 +15,8 @@ demoApp.controller('DetailCtrl', function($scope, $http, $rootScope, $filter, $r
      */
     function query(){
         var params = angular.copy($scope.params);
-        console.log(params);
-        
-        $http.get('/data/api/findOne', {params:params}).success(function(response){
+
+        $resource('/data/api/findOne').get(params, function(response){
             $scope.employee = response || {};
         });
     }
