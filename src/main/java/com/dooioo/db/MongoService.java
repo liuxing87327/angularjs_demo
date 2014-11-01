@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
 import com.mongodb.BasicDBList;
@@ -34,6 +35,8 @@ import com.mongodb.DBObject;
  */
 public class MongoService {
 
+	private static final Logger logger = Logger.getLogger(MongoService.class);
+	
 	private DBCollection getDBCollection(){
 		return MongoDbClient.getInstance().getEmployee();
 	}
@@ -273,7 +276,7 @@ public class MongoService {
 			condition.put("$or", userList);
 		}
 		
-		System.out.println(condition);
+		logger.info(condition);
 		return condition;
 	}
     

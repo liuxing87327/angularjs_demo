@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -26,12 +28,15 @@ import com.mongodb.ServerAddress;
  */
 public class MongoDbClient {
 	
-private static MongoDbClient client;
+	private static final Logger logger = Logger.getLogger(MongoDbClient.class);
+	
+	private static MongoDbClient client;
 	
     private DB db;
-    private boolean isLocal = true;
+    private boolean isLocal = false;
     
     private MongoDbClient() throws Exception {
+
     	if(this.isLocal){
 			this.initDbFromLocal();
 		} else {
@@ -59,6 +64,8 @@ private static MongoDbClient client;
 									new MongoClientOptions.Builder().cursorFinalizerEnabled(false).build());
 		db = mongoClient.getDB(databaseName);
 		db.authenticate(username, password.toCharArray());
+		
+		logger.info("创建百度云Mongodb连接");
     }
     
     /**
@@ -87,6 +94,8 @@ private static MongoDbClient client;
         Mongo connection = new Mongo(buildHostList(), options);
         
         db = connection.getDB("test");
+        
+        logger.info("创建本地Mongodb连接");
     }
     
     private List<ServerAddress> buildHostList() throws UnknownHostException{
@@ -129,7 +138,7 @@ private static MongoDbClient client;
     	List<DBObject> list = dbCollection.getIndexInfo();
 	 
     	for(DBObject index : list){
-    		System.out.println(index);
+    		logger.info(index);
     	}
     }
     
