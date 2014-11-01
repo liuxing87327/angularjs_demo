@@ -33,7 +33,7 @@ public class MongoDbClient {
 	private static MongoDbClient client;
 	
     private DB db;
-    private boolean isLocal = false;
+    private boolean isLocal = true;
     
     private MongoDbClient() throws Exception {
 
