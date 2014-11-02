@@ -18,7 +18,7 @@ demoApp.config(function($routeProvider, $locationProvider, $httpProvider) {
 
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    
+
 
     var param = function(obj) {
 		var query = '', name, value, fullSubName, subName, subValue, innerObj, i;

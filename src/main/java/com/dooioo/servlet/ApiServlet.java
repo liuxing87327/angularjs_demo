@@ -8,8 +8,10 @@
  */
 package com.dooioo.servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.dooioo.db.MongoService;
+import org.apache.log4j.Logger;
+import org.nutz.lang.Strings;
 
 /**
  * 类功能说明：数据CURD相关操作的接口
@@ -31,6 +35,8 @@ import com.dooioo.db.MongoService;
 public class ApiServlet extends HttpServlet { 
 	 
 	private static final long serialVersionUID = 3553230795361397498L;
+
+    private static final Logger logger = Logger.getLogger(ApiServlet.class);
 	
 	private MongoService mongoService = new MongoService();
 
@@ -82,7 +88,13 @@ public class ApiServlet extends HttpServlet {
 	
 	@Override
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		this.initDate(request, response);
+        String _method = defaultWebStr(request, "_method", "");
+
+        if(Strings.equals(_method, "initDate")){
+            this.initDate(request, response);
+        }else{
+            this.update(request, response);
+        }
 	}
 
     /**
@@ -112,11 +124,11 @@ public class ApiServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void query(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String keyword = defaultStr(request, "keyword", "");
-		String status = defaultStr(request, "status", "");
-		String dateFrom = defaultStr(request, "dateFrom", "");
-		String dateTo = defaultStr(request, "dateTo", "");
-		String pageNo = defaultStr(request, "pageNo", "1");
+		String keyword = defaultWebStr(request, "keyword", "");
+		String status = defaultWebStr(request, "status", "");
+		String dateFrom = defaultWebStr(request, "dateFrom", "");
+		String dateTo = defaultWebStr(request, "dateTo", "");
+		String pageNo = defaultWebStr(request, "pageNo", "1");
 		
 		Map<String, Object> map = new HashMap<>();
 		Map<String, Object> paginate = mongoService.query(keyword, dateFrom, dateTo, status, Integer.parseInt(pageNo));
@@ -176,14 +188,17 @@ public class ApiServlet extends HttpServlet {
 	 * @throws UnsupportedEncodingException
 	 * @throws IOException
 	 */
-	private void update(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String userCode = defaultStr(request, "userCode", "");
-		String status = defaultStr(request, "status", "");
-		String userName = defaultStr(request, "userName", "");
-		String orgName = defaultStr(request, "orgName", "");
-		String position = defaultStr(request, "position", "");
-		String createdAt = defaultStr(request, "createdAt", "");
-		
+	private void update(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Map<String, Object> param = this.getBody(request.getReader());
+
+        String userCode = defaultStr(param.get("userCode"), "");
+		String status = defaultStr(param.get("status"), "");
+		String userName = defaultStr(param.get("userName"), "");
+		String orgName = defaultStr(param.get("orgName"), "");
+		String position = defaultStr(param.get("position"), "");
+		String createdAt = defaultStr(param.get("createdAt"), "");
+
 		Map<String, Object> map = new HashMap<>();
 		
 		if(mongoService.update(userCode, userName, orgName, position, createdAt, status)){
@@ -195,8 +210,8 @@ public class ApiServlet extends HttpServlet {
 		String json = JSON.toJSONString(map);
 		this.write(json, response);
 	}
-	
-	/**
+
+    /**
 	 * 
 	 * 功能说明：初始化列表数据
 	 * @author 刘兴 
@@ -230,11 +245,11 @@ public class ApiServlet extends HttpServlet {
 	 * @throws IOException
 	 */
 	private void add(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String status = defaultStr(request, "status", "");
-		String userName = defaultStr(request, "userName", "");
-		String orgName = defaultStr(request, "orgName", "");
-		String position = defaultStr(request, "position", "");
-		String createdAt = defaultStr(request, "createdAt", "");
+		String status = defaultWebStr(request, "status", "");
+		String userName = defaultWebStr(request, "userName", "");
+		String orgName = defaultWebStr(request, "orgName", "");
+		String position = defaultWebStr(request, "position", "");
+		String createdAt = defaultWebStr(request, "createdAt", "");
 		
 		Map<String, Object> map = new HashMap<>();
 		
@@ -252,8 +267,55 @@ public class ApiServlet extends HttpServlet {
 		response.getOutputStream().write(json.toString().getBytes("UTF-8"));  
 		response.setContentType("text/json; charset=UTF-8");  
 	}
+
+    /**
+     * 从put请求的数据中提取参数
+     * @param br
+     * @return
+     */
+    private Map<String, Object> getBody(BufferedReader br) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        String inputLine;
+        String params = "";
+        try {
+            while ((inputLine = br.readLine()) != null) {
+                params += inputLine;
+            }
+            br.close();
+        } catch (IOException e) {
+            logger.info(e.getMessage(), e);
+        }
+
+        if(Strings.isEmpty(params)){
+            return paramsMap;
+        }
+
+        try {
+            params = URLDecoder.decode(params, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.info(e.getMessage(), e);
+        }
+
+        String[] paramsArr = params.split("&");
+        for (String param : paramsArr) {
+            if (Strings.isEmpty(param)) {
+                continue;
+            }
+
+            String[] paramArr = param.split("=");
+            if (paramArr.length == 1){
+                paramsMap.put(paramArr[0], null);
+                continue;
+            }
+
+            paramsMap.put(paramArr[0], paramArr[1]);
+        }
+
+        return paramsMap;
+    }
 	
-	private String defaultStr(HttpServletRequest request, String name, String defaultStr) {
+	private String defaultWebStr(HttpServletRequest request, String name, String defaultStr) {
 		String obj = request.getParameter(name);
 		
 		if (obj == null) {
@@ -266,5 +328,17 @@ public class ApiServlet extends HttpServlet {
 		
 		return obj.toString();
 	}
+
+    private String defaultStr(Object value, String defaultStr) {
+        if (value == null) {
+            return defaultStr;
+        }
+
+        if ("".equals(value)) {
+            return defaultStr;
+        }
+
+        return value.toString();
+    }
  
 }
