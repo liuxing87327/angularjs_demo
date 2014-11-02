@@ -49,14 +49,12 @@ public class ApiServlet extends HttpServlet {
 		
 		String requestUrl = request.getRequestURI();
 		
-		if(requestUrl.endsWith("query")) {
+		if(requestUrl.endsWith("employee")) {
 			this.query(request, response);
+		}else{
+	        String userCode = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
+			this.findOne(userCode, response);
 		}
-		
-		if(requestUrl.endsWith("findOne")) {
-			this.findOne(request, response);
-		}
-		
 	}
 
     /**
@@ -74,17 +72,17 @@ public class ApiServlet extends HttpServlet {
 
         String requestUrl = request.getRequestURI();
 
-		if(requestUrl.endsWith("update")) {
+		if(requestUrl.endsWith("employee")) {
+			this.add(request, response);
+		} else {
 			this.update(request, response);
 		}
 		
-		if(requestUrl.endsWith("add")) {
-			this.add(request, response);
-		}
-		
-		if(requestUrl.endsWith("initDate")) {
-			this.initDate(request, response);
-		}
+	}
+	
+	@Override
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		this.initDate(request, response);
 	}
 
     /**
@@ -98,12 +96,9 @@ public class ApiServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-
         String requestUrl = request.getRequestURI();
-
-        if(requestUrl.endsWith("delete")) {
-            this.delete(request, response);
-        }
+        String userCode = requestUrl.substring(requestUrl.lastIndexOf("/") + 1);
+        this.delete(userCode, response);
     }
 
     /**
@@ -137,14 +132,12 @@ public class ApiServlet extends HttpServlet {
 	 * 功能说明：查询单个明细
 	 * @author 刘兴 
 	 * @Date 2014年10月26日 下午9:30:08
-	 * @param request
+	 * @param userCode
 	 * @param response
 	 * @throws UnsupportedEncodingException
 	 * @throws IOException
 	 */
-	private void findOne(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String userCode = defaultStr(request, "userCode", "");
-		
+	private void findOne(String userCode, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
 		Map<String, Object> map = mongoService.findOne(userCode);
 		String json = JSON.toJSONString(map);
 		this.write(json, response);
@@ -155,13 +148,12 @@ public class ApiServlet extends HttpServlet {
 	 * 功能说明：删除一个记录
 	 * @author 刘兴 
 	 * @Date 2014年10月26日 下午9:30:18
-	 * @param request
+	 * @param userCode
 	 * @param response
 	 * @throws IOException 
 	 * @throws UnsupportedEncodingException 
 	 */
-	private void delete(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
-		String userCode = defaultStr(request, "userCode", "");
+	private void delete(String userCode, HttpServletResponse response) throws UnsupportedEncodingException, IOException{
 		Map<String, Object> map = new HashMap<>();
 		
 		if(mongoService.remove(userCode)){

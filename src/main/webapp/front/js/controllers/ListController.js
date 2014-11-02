@@ -27,7 +27,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
             var params = urlParseService.buildSearch(angular.copy($scope.params));
             $location.search(params);
         }else{
-        	$scope.query();
+        	query();
         }
     }, true);
     
@@ -37,7 +37,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
 //            return false;
 //        }
 //
-//        $scope.query();
+//        query();
     });
     
     //监听员工操作结果参数的变更（消息通知的方式）
@@ -48,7 +48,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
             return false;
         }
 
-        $scope.query();
+        query();
     });
     
     //初始化数据
@@ -58,7 +58,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
 
             $scope.empService.initDate(params, function(response){
                 console.log("数据已经重置！");
-                $scope.query();
+                query();
             });
     	}
     }
@@ -83,11 +83,8 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
      */
     $scope.remove = function(id){
     	if(window.confirm("确定要删除此人员吗？")){
-    		var params = {};
-        	params.userCode = id;
-        	
-            $scope.empService.remove(params, function(response){
-                $scope.query();
+            $scope.empService.remove(id, function(response){
+                query();
             });
     	}
     };
@@ -95,7 +92,7 @@ demoApp.controller('ListCtrl', function($scope, $http, $rootScope, $location, $f
     /**
      * 查询后台的jsonList数据
      */
-    $scope.query = function(){
+    function query(){
     	$scope.loadStatus = true;
     	
         var params = angular.copy($scope.params);

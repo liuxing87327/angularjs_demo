@@ -1,7 +1,20 @@
+demoApp.factory('Employee', function ($resource) {
+    var actions = {
+        initDate: {method: 'PUT', params: {}},
+        add: {method: 'POST', params: {}},
+        remove: {method: 'DELETE', params: {}},
+        update: {method: 'POST', params: {}},
+        query: {method: 'GET', params: {}, isArray: false},
+        findOne: {method: 'GET', params: {}}
+    };
+
+    return $resource('/data/api/employee/:id', {id: '@userCode'}, actions);
+});
+
 /**
  * 用户新增和编辑相关的操作
  */
-demoApp.factory('empService', function($http, $resource){
+demoApp.factory('empService', function($http, $resource, Employee){
 	var empService = {};
 	
 	//初始数据
@@ -58,37 +71,43 @@ demoApp.factory('empService', function($http, $resource){
     //=================================使用resource的方式==========================================
 
     //初始数据
-    empService.initDate = function(params, callback){
-        $resource('/data/api/initDate').save(params, function(response){
+    empService.initDate = function (params, callback) {
+        Employee.initDate(params, function (response) {
+            callback(response);
+        });
+    }
+
+    //删除数据
+    empService.remove = function (userCode, callback) {
+        Employee.remove({'id': userCode}, function (response) {
             callback(response);
         });
     }
 
     //添加数据
-    empService.add = function(params, callback){
-        $resource('/data/api/add').save(params, function(response){
-            callback(response);
-        });
-
-    }
-
-    //删除数据
-    empService.remove = function(params, callback){
-        $resource('/data/api/delete').remove(params, function(response){
+    empService.add = function (params, callback) {
+        Employee.add(params, function (response) {
             callback(response);
         });
     }
 
     //更新数据
-    empService.update = function(params, callback){
-        $resource('/data/api/update').save(params, function(response){
+    empService.update = function (params, callback) {
+        Employee.update(params, function (response) {
             callback(response);
         });
     }
 
     //查询列表
-    empService.query = function(params, callback){
-        $resource('/data/api/query').get(params, function(response){
+    empService.query = function (params, callback) {
+        Employee.query(params, function (response) {
+            callback(response);
+        });
+    }
+
+    //查询详情
+    empService.findOne = function (userCode, callback) {
+        Employee.findOne({'id': userCode}, function (response) {
             callback(response);
         });
     }

@@ -19,7 +19,7 @@
   
   <servlet-mapping>
     <servlet-name>data-api</servlet-name>
-    <url-pattern>/data/api/*</url-pattern>
+    <url-pattern>/data/api/employee/*</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>
