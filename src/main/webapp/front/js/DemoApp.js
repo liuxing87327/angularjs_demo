@@ -59,11 +59,10 @@ demoApp.config(function($routeProvider, $locationProvider, $httpProvider) {
     
 });
 
-demoApp.run(function($rootScope, $http){
+demoApp.run(function($rootScope, $http, constants){
 	$rootScope.mainUrl = '/angularjs-demo/';//主请求
-	
+    $rootScope.constants = constants;
 	$rootScope.$on('$routeChangeStart', function(event, next, current){
-		//路由跳转前自动设置title，值在when中自定义参数
         document.getElementsByTagName("title").item(0).innerText = (next.$$route.title + " - 人员管理 - 德佑地产");
 	});
 	

@@ -7,17 +7,18 @@
 		<tr>	
 			<td align="right" width="60">状态：</td>
   			<td width="100">	
-                <select ng-model="params.status" ng-options="e.key as e.value for e in constants.empStatus">
+                <select ng-model="searchParams.status" ng-options="e.key as e.value for e in $parent.constants.empStatus">
 			        <option value="">请选择</option>
 			    </select>
 			</td>
 			<td width="60" align="right">入职日期：</td>
   			<td width="180">	
-  				<input type="text" class="txtDate" ng-model="$parent.params.dateFrom" date-picker readonly="readonly" /> - <input type="text" class="txtDate" ng-model="$parent.params.dateTo" date-picker readonly="readonly" />
+  				<input type="text" class="txtDate" ng-model="$parent.searchParams.dateFrom" date-picker readonly="readonly" /> - <input type="text" class="txtDate" ng-model="$parent.searchParams.dateTo" date-picker readonly="readonly" />
 			</td>
 			<td align="right">关键字：</td>
   			<td>	
-				<input type="text" class="txtNew tt280" name="keyword" ng-model="keyword" id="keyword" placeholder="请输入工号或姓名">
+				<input type="text" class="txtNew tt280" name="keyword" ng-model="keyword" id="keyword" placeholder="请输入工号或姓名" popdiv="autoComp_keyword" />
+                <div id="autoComp_keyword" class="autoComplate"></div>
 			</td>
 		</tr>
     </table>
@@ -32,7 +33,7 @@
 	<span class="left">共有 <b class="red">{{list.totalCount}}</b> 条符合条件的结果</span>
 	<span class="right">
 		<a href="javascript:;" class="btn-small btn-red in_block ml_10 js_add" ng-click="initDate()">初始数据</a>
-		<a href="javascript:;" class="btn-small btn-green in_block ml_10 js_add" ng-click="employee.oper = 'add'">新增人员</a>
+		<a href="javascript:;" class="btn-small btn-green in_block ml_10 js_add" ng-click="employee.showPopup = true">新增人员</a>
 	</span>
 </p>
 
@@ -54,7 +55,7 @@
 		<td>{{employee.createdAt | date:'yyyy-MM-dd'}}</td>
 		<td>{{employee.status}}</td>
 		<td>
-			<a href="javascript:;" class="btn-small btn-silver in_block js_edit" ng-click="toEmployeeUpdate(employee.userCode)">编辑</a>
+			<a href="javascript:;" class="btn-small btn-silver in_block js_edit" ng-click="update(employee.userCode)">编辑</a>
 			<a href="javascript:;" class="btn-small btn-red in_block" ng-click="remove(employee.userCode)">删除</a>
 		</td>
 	</tr>
@@ -62,9 +63,9 @@
 
 <!--搜索结果 end -->
 
-<div paginator display-num="5" show-jump="true" record-count="list.totalCount" page-size="list.pageSize" current-page="params.pageNo"></div>
+<div paginator display-num="5" show-jump="true" record-count="list.totalCount" page-size="list.pageSize" current-page="searchParams.pageNo"></div>
 
 <!-- 人员编辑和新增的组件 -->
-<employee popup-params="employee" constants="constants"></employee>
+<employee popup-params="employee"></employee>
 
 </div>

@@ -34,7 +34,7 @@
     <script	type="text/ng-template" id="popupEmployeeTpl">
 		<div class="popLayer bubbleBox" id="employee_layer_form">
           <div class="bubbleBoxTitle clearfix">
-              <h1>{{popupParams.operValue}}人员信息</h1>
+              <h1>{{popupParams.editEmployee.userCode && '编辑' || '新增'}}人员信息</h1>
               <div class="cls"><a href="javascript:;" class="closePopBox xx" ng-click="popupParams.showPopup = false"></a></div>
           </div>
           <div class="bubbleBoxCon pd_20">
@@ -50,7 +50,7 @@
                         <td class="tdTitle">部门：</td>
                         <td class="request">●</td>
                         <td>
-                            <select name="org" ng-model="popupParams.editEmployee.orgName" ng-options="orgName as orgName for orgName in constants.orgNames" rule="required">
+                            <select name="org" ng-model="popupParams.editEmployee.orgName" ng-options="orgName as orgName for orgName in $parent.constants.orgNames" rule="required">
                                 <option value="">请选择</option>
                             </select>
                         </td>
@@ -59,7 +59,7 @@
                         <td class="tdTitle">岗位：</td>
                         <td class="request">●</td>
                         <td>
-                            <select name="position" ng-model="popupParams.editEmployee.position" ng-options="position as position for position in constants.positions" rule="required">
+                            <select name="position" ng-model="popupParams.editEmployee.position" ng-options="position as position for position in $parent.constants.positions" rule="required">
                                 <option value="">请选择</option>
                             </select>
                         </td>
@@ -92,8 +92,7 @@
           <div class="bubbleBoxBtn">
 			  <span class="bold red in_block mt_5 mr_20">{{popupParams.message}}</span>
               <a href="javascript:;" class="btn-small btn-silver in_block" ng-click="popupParams.showPopup = false">关闭</a>
-              <a href="javascript:;" ng-show="popupParams.oper == 'add'" class="btn-small btn-blue in_block" id="btn_submit" ng-click="add()">提交</a>
-			  <a href="javascript:;" ng-show="popupParams.oper == 'update'" class="btn-small btn-blue in_block" id="btn_submit" ng-click="update()">提交</a>
+			  <a href="javascript:;" class="btn-small btn-blue in_block" id="btn_submit" ng-click="save()">提交</a>
           </div>
         </div>
     </script>
@@ -110,7 +109,7 @@
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/validation.js"></script>
 
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/lib/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
 
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/angular/directive/directive.js"></script>
 <script type="text/javascript" src="http://public.dui.dooioo.com/public/js/paginate.js"></script>
