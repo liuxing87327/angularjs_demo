@@ -30,8 +30,28 @@ public class IpUtils {
         } 
         
         return false; 
-    } 
-   
+    }
+
+    /**
+     * 判断当前系统是否是MacOS系统
+     * @return
+     */
+    public static boolean isMacOS() {
+        if (System.getProperty("os.name").toLowerCase().contains("mac os")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 获取系统名称
+     * @return
+     */
+    public static String getOsName() {
+        return System.getProperty("os.name");
+    }
+
     /**
      * 获取本机IP地址
      * 并自动区分Windows还是Linux操作系统 

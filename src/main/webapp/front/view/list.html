@@ -49,7 +49,7 @@
 	</tr>
 	<tr ng-repeat="employee in list.pageList">
 		<td>{{employee.userCode}}</td>
-		<td><a href="/angularjs-demo/detail/{{employee.userCode}}">{{employee.userName}}</a></td>
+		<td><a href="/employee/detail/{{employee.userCode}}">{{employee.userName}}</a></td>
 		<td>{{employee.orgName}}</td>
 		<td>{{employee.position}}</td>
 		<td>{{employee.createdAt | date:'yyyy-MM-dd'}}</td>

@@ -40,7 +40,7 @@ demoApp.controller('ListCtrl', function($scope, $rootScope, $location, $filter, 
     }
     
     $scope.update = function(id){
-        Employee.findOne({'id': id}, function(response){
+        Employee.get({'id': id}, function(response){
             $scope.employee.editEmployee = response || {};
             $scope.employee.editEmployee.createdAt = $filter('date')($scope.employee.editEmployee.createdAt, 'yyyy-MM-dd');
             $scope.employee.showPopup = true;

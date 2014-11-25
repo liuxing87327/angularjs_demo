@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+    <context:component-scan base-package="com.dooioo.*" />
+
+    <bean id="userCredentials" class="org.springframework.data.authentication.UserCredentials">
+        <constructor-arg name="username" value="${${env}.mongo.username}"/>
+        <constructor-arg name="password" value="${${env}.mongo.password}"/>
+    </bean>
+
+    <bean id="mongoOptions" class="com.mongodb.MongoOptions">
+        <property name="cursorFinalizerEnabled" value="${${env}.mongo.cursorFinalizerEnabled}"/>
+        <property name="connectionsPerHost" value="${${env}.mongo.connectionsPerHost}" />
+        <property name="threadsAllowedToBlockForConnectionMultiplier" value="${${env}.mongo.threadsAllowedToBlockForConnectionMultiplier}" />
+        <property name="maxWaitTime" value="${${env}.mongo.maxWaitTime}" />
+        <property name="connectTimeout" value="${${env}.mongo.connectTimeout}" />
+        <property name="socketTimeout" value="${${env}.mongo.socketTimeout}" />
+        <property name="autoConnectRetry" value="${${env}.mongo.autoConnectRetry}" />
+        <property name="maxAutoConnectRetryTime" value="${${env}.mongo.maxAutoConnectRetryTime}" />
+        <property name="socketKeepAlive" value="${${env}.mongo.socketKeepAlive}" />
+    </bean>
+
+    <bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+        <property name="mongoOptions" ref="mongoOptions"/>
+        <property name="host" value="${${env}.mongo.host}"/>
+        <property name="port" value="${${env}.mongo.port}"/>
+    </bean>
+
+    <bean id="mongoDbFactory" class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+        <constructor-arg name="mongo" ref="mongo"/>
+        <constructor-arg name="databaseName" value="${${env}.mongo.databaseName}"/>
+        <constructor-arg name="credentials" ref="userCredentials"/>
+    </bean>
+
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+        <property name="writeResultChecking" value="EXCEPTION" />
+    </bean>
+
+    <context:annotation-config />
+
+</beans>

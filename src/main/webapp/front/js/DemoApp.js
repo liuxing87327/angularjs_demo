@@ -3,12 +3,12 @@ var demoApp = angular.module('demoApp', ['dui.directive', 'myDemo.directive', 'n
 demoApp.config(function($routeProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider.when('/detail/:id', {
-				        templateUrl: '/front/view/detail.html',
+				        templateUrl: '/static/front/view/detail.html',
 				        controller: 'DetailCtrl',
 				        title: '详情'
 				    }).
 				    when('/list', {
-				        templateUrl: '/front/view/list.html',
+				        templateUrl: '/static/front/view/list.html',
 				        controller: 'ListCtrl',
 				        title: '列表'
 				    }).
