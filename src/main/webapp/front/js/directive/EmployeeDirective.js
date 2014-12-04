@@ -43,9 +43,15 @@
 
 	        		var requestParams = scope.popupParams.editEmployee;
 
-					Employee.save(requestParams, function (response) {
-						callback(response);
-					});
+					if (requestParams.userCode && requestParams.userCode != '') {
+						Employee.save(requestParams, function (response) {
+							callback(response);
+						});
+					} else {
+						Employee.add(requestParams, function (response) {
+							callback(response);
+						});
+					}
 	            }
 	            
 	         }

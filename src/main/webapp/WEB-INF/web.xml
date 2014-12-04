@@ -35,6 +35,17 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- 配置Form表单支持PUT，必须在dispatch前 -->
+  <filter>
+    <filter-name>httpMethodFilter</filter-name>
+    <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>httpMethodFilter</filter-name>
+    <servlet-name>angularjs-demo</servlet-name>
+  </filter-mapping>
+
   <!--配置MVC请求分发器-->
   <servlet>
     <servlet-name>angularjs-demo</servlet-name>

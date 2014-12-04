@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,7 +87,7 @@ public class EmployeeApiController {
      * @param createdAt
      * @return
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public Map<String, Object> edit(@PathVariable("id") String id,
                                     @RequestParam(required = true, value = "status", defaultValue = "") String status,
                                     @RequestParam(required = true, value = "userName", defaultValue = "") String userName,
@@ -133,12 +134,13 @@ public class EmployeeApiController {
      * @return
      */
     @RequestMapping(method = RequestMethod.GET)
-    public Map<String, Object> query(@RequestParam(required = false, value = "keyword") String keyword,
-                                     @RequestParam(required = false, value = "status") String status,
-                                     @RequestParam(required = false, value = "dateFrom") String dateFrom,
-                                     @RequestParam(required = false, value = "dateTo") String dateTo,
-                                     @RequestParam(required = false, value = "pageNo", defaultValue = "1") int pageNo){
-
+    public Map<String, Object> query(@RequestParam(value = "keyword", required = false) String keyword,
+                                     @RequestParam(value = "status", required = false) String status,
+                                     @RequestParam(value = "dateFrom", required = false) String dateFrom,
+                                     @RequestParam(value = "dateTo", required = false) String dateTo,
+                                     @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+                                     HttpServletRequest request){
+        String requestUri = request.getQueryString();
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> paginate = mongodbService.queryPaginate(keyword, dateFrom, dateTo, status, pageNo);
 
