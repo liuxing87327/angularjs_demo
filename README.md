@@ -1,4 +1,4 @@
-#*angularjs_demo*
+#*angularjs + bootstrap + spring + mongodb*
 
 ----------
 
